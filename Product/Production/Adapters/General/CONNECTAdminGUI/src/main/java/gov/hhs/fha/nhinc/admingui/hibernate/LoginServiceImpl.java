@@ -76,23 +76,28 @@ public class LoginServiceImpl implements LoginService {
      */
     @Override
     @Transactional
-    public boolean login(Login login) throws UserLoginException {
-        boolean loggedIn = false;
+	public boolean login(Login login) throws UserLoginException {
+		boolean loggedIn = false;
 
-        UserLogin user = userLoginDAO.login(login);
-        log.debug("db user name: ".concat(user.getUserName()));
-        log.debug("db salt: ".concat(user.getSalt()));
-        log.debug("db password: ".concat(user.getSha1()));
-        if (user != null && user.getSha1() != null && user.getSalt() != null && login.getPassword() != null) {
-            try {
-                loggedIn = passwordService.checkPassword(user.getSha1().getBytes(), login.getPassword().getBytes(),
-                        user.getSalt().getBytes());
-            } catch (PasswordServiceException e) {
-                throw new UserLoginException("Error while trying to login.", e);
-            }
-        }
-        return loggedIn;
-    }
+		UserLogin user = userLoginDAO.login(login);
+		if (user != null) {
+
+			log.debug("db user name: ".concat(user.getUserName()));
+			log.debug("db salt: ".concat(user.getSalt()));
+			log.debug("db password: ".concat(user.getSha1()));
+		}
+		if (user != null && user.getSha1() != null && user.getSalt() != null 
+				&& login.getPassword() != null) {
+			try {
+				loggedIn = passwordService.checkPassword(user.getSha1()
+						.getBytes(), login.getPassword().getBytes(), user
+						.getSalt().getBytes());
+			} catch (PasswordServiceException e) {
+				throw new UserLoginException("Error while trying to login.", e);
+			}
+		}
+		return loggedIn;
+	}
 
     /* (non-Javadoc)
      * @see gov.hhs.fha.nhinc.admingui.services.LoginService#addUser(gov.hhs.fha.nhinc.admingui.model.User)

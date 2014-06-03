@@ -26,8 +26,12 @@
  */
 package gov.hhs.fha.nhinc.admingui.hibernate.dao;
 
+import java.util.List;
+
 import gov.hhs.fha.nhinc.admingui.model.Login;
 import gov.hhs.fha.nhinc.admingui.services.persistence.jpa.entity.UserLogin;
+
+import org.apache.commons.validator.Msg;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -53,12 +57,19 @@ public class UserLoginDAOImpl implements UserLoginDAO {
      * 
      * @see gov.hhs.fha.nhinc.admingui.hibernate.dao.UserLoginDAO#login(gov.hhs.fha.nhinc.admingui.model.Login)
      */
-    @Override
-    public UserLogin login(Login login) {
-        Query query = this.sessionFactory.getCurrentSession().createQuery("from UserLogin where userName = :userName");
-        query.setParameter("userName", login.getUserName());
-        return (UserLogin) query.list().get(0);
-    }
+	@Override
+	public UserLogin login(Login login) {
+		Query query = this.sessionFactory.getCurrentSession().createQuery(
+				"from UserLogin where userName = :userName");
+		query.setParameter("userName", login.getUserName());
+		List list = query.list();
+		if (!list.isEmpty() && list.get(0) != null) {
+			return (UserLogin) list.get(0);
+		} else {
+			return null;
+		}
+
+	}
 
     /**
      *

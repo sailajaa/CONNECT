@@ -26,16 +26,11 @@
  */
 package gov.hhs.fha.nhinc.admingui.managed;
 
-/*import gov.hhs.fha.nhinc.admingui.jee.jsf.UserAuthorizationListener;
-import gov.hhs.fha.nhinc.admingui.model.Login;
-import gov.hhs.fha.nhinc.admingui.services.LoginService;
-import gov.hhs.fha.nhinc.admingui.services.exception.UserLoginException;*/
-
+import gov.hhs.fha.nhinc.admingui.constant.NavigationConstant;
 import gov.hhs.fha.nhinc.admingui.jee.jsf.UserAuthorizationListener;
 import gov.hhs.fha.nhinc.admingui.model.Login;
 import gov.hhs.fha.nhinc.admingui.services.LoginService;
 import gov.hhs.fha.nhinc.admingui.services.exception.UserLoginException;
-import gov.hhs.fha.nhinc.admingui.user.bo.UserBo;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -43,6 +38,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -56,163 +53,191 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoginBean {
 
-    /** The user name. */
-    private String userName;
+	public static final Logger log = Logger.getLogger(LoginBean.class);
 
-    /** The password. */
-    private String password;
+	/** The user name. */
+	private String userName;
 
-    /** The is correct. */
-    public Boolean isCorrect = false;
+	/** The password. */
+	private String password;
 
-    /** The msg. */
-    private FacesMessage msg;
+	/** The login service. */
+	@Autowired
+	private LoginService loginService;
+	
+	private FacesMessage msg;
 
-    /** The login service. */
-    @Autowired
-    private LoginService loginService;
+	/**
+	 * Gets the user name. 
+	 * @return the user name
+	 */
+	public String getUserName() {
+		return userName;
+	}
 
-    @Autowired
-    private UserBo userBo;
+	/**
+	 * Sets the user name. 
+	 * @param userName
+	 * the new user name
+	 */
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
-    public void setUserBo(UserBo userBo) {
-        this.userBo = userBo;
-    }
+	/**
+	 * Gets the password. 
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
 
-    public String printMsgFromSpring() {
-        return userBo.getMessage();
-    }
+	/**
+	 * Sets the password. 
+	 * @param password
+	 * the new password
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    /**
-     * Gets the msg.
-     * 
-     * @return the msg
-     */
-    public FacesMessage getMsg() {
-        return msg;
-    }
+	/**
+	 * Instantiates a new login bean.
+	 */
+	public LoginBean() {
+	}
 
-    /**
-     * Sets the msg.
-     * 
-     * @param msg the new msg
-     */
-    public void setMsg(FacesMessage msg) {
-        this.msg = msg;
-    }
+	/**
+	 * Invoke patient.
+	 * 
+	 * @return the string
+	 */
+	public String invokeLogin() {
 
-    /**
-     * Gets the user name.
-     * 
-     * @return the user name
-     */
-    public String getUserName() {
-        return userName;
-    }
+		/**if (!checkUsername()) {
+			FacesContext.getCurrentInstance().addMessage("username",
+					new FacesMessage("Not valid username   "));
+			return null;
+		}*/
 
-    /**
-     * Sets the user name.
-     * 
-     * @param userName the new user name
-     */
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+		if (!login()) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"username and password not valid", userName)); 
+			return null;
+		} 
+		//return NavigationConstant.STATUS_PAGE;
+		return NavigationConstant.STATUS_PAGE;
 
-    /**
-     * Gets the password.
-     * 
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
+		// please build and redeploy ok
+		// System.out.println("inside invokelogin");
+		// if (!validateFields()) {
+		// System.out.println("after the validate fileds check from invokelogin");
+		// if (login()) {
+		// System.out.println("inside login of invokelogin");
+		// return NavigationConstant.STATUS_PAGE;
+		// }
+		// else{
+		// System.out.println("login else condition of invokelogin method");
+		// }
+		// } else {
+		// log.info("incorrect username and password");
+		// // return NavigationConstant.LOGIN_PAGE;
+		// return null;
+		// }
+		// return null;
+	}
 
-    /**
-     * Sets the password.
-     * 
-     * @param password the new password
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	/**
+	 * Validates all of the required fields that are entered. If entered, it
+	 * must be valid. this method is used by invokeLogin()
+	 * 
+	 * @return boolean
+	 */
+/**	public boolean validateFields() {
+		System.out.println("this is from Validatefields method");
+		FacesContext context = FacesContext.getCurrentInstance();
+		//if (StringUtils.isBlank(getUserName()) || StringUtils.isBlank(getPassword())) {
+			if(this.getUserName().contains("$$")){
+			// FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"User Name is Required","loginForm:username");
+			//context.addMessage(null, new FacesMessage("Username or password is invalid from bean"));
+			
+			//addMessage(context,"liabilityLimitsDetailsForm:medicalPayments",ValidationResource.REQUIRED,FacesMessage.SEVERITY_ERROR);
+			
+			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"User details are not valid...!!!", userName);
+			FacesContext.getCurrentInstance().addMessage(null, msg);		  
+		}
+		System.out.println("return value from bean"+context.getMessages().hasNext());
+		return context.getMessages().hasNext();
+	}*/
+	public boolean checkUsername(){
+		return userName.contains("9");
+	
+	}
+	
+	public boolean validateFields() {
+		System.out.println("this is from Validatefields method");
+		// if (StringUtils.isBlank(getUserName()) ||
+		// StringUtils.isBlank(getPassword())) {
+		if ("connectadmin".equals(userName) && "password".equals(password)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-    /**
-     * Instantiates a new login bean.
-     */
-    public LoginBean() {
-        // Injector injector = Guice.createInjector(new LoginServiceModule());
+	
+	/**
+	 * Logout. 
+	 * @return the string
+	 */
+	public String logout() {
+		userName = null;
+		password = null;
 
-        // loginService = injector.getInstance(LoginService.class);
-    }
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		HttpSession session = (HttpSession) facesContext.getExternalContext()
+				.getSession(false);
+		if (session != null) {
+			session.invalidate();
+		}
+		return NavigationConstant.LOGIN_PAGE;
+	}
 
-    /**
-     * New message.
-     * 
-     * @return the string
-     */
-    public String newMessage() {
-        return "It is from managed bean call";
-    }
+	/**
+	 * Login.
+	 * 
+	 * @return true, if successful
+	 */
+	private boolean login() {
+		boolean loggedIn = false;
+		Login login = new Login(userName, password);
+		try {
+			loggedIn = loginService.login(login);
+			System.out.println("status after the loginservice call"+loggedIn);
+			if (loggedIn) {
+				System.out.println("inside the loggedin if"+loggedIn);
+				FacesContext facesContext = FacesContext.getCurrentInstance();
+				HttpSession session = (HttpSession) facesContext
+						.getExternalContext().getSession(false);
+				session.setAttribute(
+						UserAuthorizationListener.USER_INFO_SESSION_ATTRIBUTE,
+						login);
+			}
+		} catch (UserLoginException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("before final return loggedin from login"+loggedIn);
+		return loggedIn;
+	}
 
-    /**
-     * Invoke patient.
-     * 
-     * @return the string
-     */
-    public String invokePatient() {
-        System.out.println("Login user details from NewFile page" + userName);
-        System.out.println("Login password details from NewFile page" + password);
-        if (login()) {
-            this.isCorrect = true;
-            //return "PatientSearch";
-            return "status";
-        } else {
-            this.isCorrect = false;
-            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "User details are not valid...!!!", userName);
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            return "Login";
-        }
+	public FacesMessage getMsg() {
+		return msg;
+	}
 
-    }
-
-    /**
-     * Logout.
-     * 
-     * @return the string
-     */
-    public String logout() {
-        userName = null;
-        password = null;
-
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
-        return "Login";
-    }
-
-    /**
-     * Login.
-     * 
-     * @return true, if successful
-     */
-    private boolean login() {
-        boolean loggedIn = false;
-        Login login = new Login(userName, password);
-        try {
-            loggedIn = loginService.login(login);
-
-            if (loggedIn) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
-                session.setAttribute(UserAuthorizationListener.USER_INFO_SESSION_ATTRIBUTE, login);
-            }
-        } catch (UserLoginException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return loggedIn;
-    }
+	public void setMsg(FacesMessage msg) {
+		this.msg = msg;
+	}
 }
