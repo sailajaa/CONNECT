@@ -59,8 +59,7 @@ public class UserLoginDAOImpl implements UserLoginDAO {
      */
 	@Override
 	public UserLogin login(Login login) {
-		Query query = this.sessionFactory.getCurrentSession().createQuery(
-				"from UserLogin where userName = :userName");
+		Query query = this.sessionFactory.getCurrentSession().createQuery("from UserLogin where userName = :userName");
 		query.setParameter("userName", login.getUserName());
 		List list = query.list();
 		if (!list.isEmpty() && list.get(0) != null) {
@@ -68,7 +67,6 @@ public class UserLoginDAOImpl implements UserLoginDAO {
 		} else {
 			return null;
 		}
-
 	}
 
     /**

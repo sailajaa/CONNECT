@@ -65,8 +65,6 @@ public class LoginBean {
 	@Autowired
 	private LoginService loginService;
 	
-	private FacesMessage msg;
-
 	/**
 	 * Gets the user name. 
 	 * @return the user name
@@ -100,7 +98,6 @@ public class LoginBean {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	/**
 	 * Instantiates a new login bean.
 	 */
@@ -108,86 +105,19 @@ public class LoginBean {
 	}
 
 	/**
-	 * Invoke patient.
-	 * 
+	 * Invoke patient. 
 	 * @return the string
 	 */
 	public String invokeLogin() {
-
-		/**if (!checkUsername()) {
-			FacesContext.getCurrentInstance().addMessage("username",
-					new FacesMessage("Not valid username   "));
-			return null;
-		}*/
-
 		if (!login()) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
-							"username and password not valid", userName)); 
+							"Username and/or Password not valid ","")); 
 			return null;
 		} 
-		//return NavigationConstant.STATUS_PAGE;
 		return NavigationConstant.STATUS_PAGE;
-
-		// please build and redeploy ok
-		// System.out.println("inside invokelogin");
-		// if (!validateFields()) {
-		// System.out.println("after the validate fileds check from invokelogin");
-		// if (login()) {
-		// System.out.println("inside login of invokelogin");
-		// return NavigationConstant.STATUS_PAGE;
-		// }
-		// else{
-		// System.out.println("login else condition of invokelogin method");
-		// }
-		// } else {
-		// log.info("incorrect username and password");
-		// // return NavigationConstant.LOGIN_PAGE;
-		// return null;
-		// }
-		// return null;
 	}
-
-	/**
-	 * Validates all of the required fields that are entered. If entered, it
-	 * must be valid. this method is used by invokeLogin()
-	 * 
-	 * @return boolean
-	 */
-/**	public boolean validateFields() {
-		System.out.println("this is from Validatefields method");
-		FacesContext context = FacesContext.getCurrentInstance();
-		//if (StringUtils.isBlank(getUserName()) || StringUtils.isBlank(getPassword())) {
-			if(this.getUserName().contains("$$")){
-			// FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"User Name is Required","loginForm:username");
-			//context.addMessage(null, new FacesMessage("Username or password is invalid from bean"));
-			
-			//addMessage(context,"liabilityLimitsDetailsForm:medicalPayments",ValidationResource.REQUIRED,FacesMessage.SEVERITY_ERROR);
-			
-			msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"User details are not valid...!!!", userName);
-			FacesContext.getCurrentInstance().addMessage(null, msg);		  
-		}
-		System.out.println("return value from bean"+context.getMessages().hasNext());
-		return context.getMessages().hasNext();
-	}*/
-	public boolean checkUsername(){
-		return userName.contains("9");
-	
-	}
-	
-	public boolean validateFields() {
-		System.out.println("this is from Validatefields method");
-		// if (StringUtils.isBlank(getUserName()) ||
-		// StringUtils.isBlank(getPassword())) {
-		if ("connectadmin".equals(userName) && "password".equals(password)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	
 	/**
 	 * Logout. 
 	 * @return the string
@@ -206,8 +136,7 @@ public class LoginBean {
 	}
 
 	/**
-	 * Login.
-	 * 
+	 * Login. 
 	 * @return true, if successful
 	 */
 	private boolean login() {
@@ -215,9 +144,7 @@ public class LoginBean {
 		Login login = new Login(userName, password);
 		try {
 			loggedIn = loginService.login(login);
-			System.out.println("status after the loginservice call"+loggedIn);
 			if (loggedIn) {
-				System.out.println("inside the loggedin if"+loggedIn);
 				FacesContext facesContext = FacesContext.getCurrentInstance();
 				HttpSession session = (HttpSession) facesContext
 						.getExternalContext().getSession(false);
@@ -229,15 +156,6 @@ public class LoginBean {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("before final return loggedin from login"+loggedIn);
 		return loggedIn;
-	}
-
-	public FacesMessage getMsg() {
-		return msg;
-	}
-
-	public void setMsg(FacesMessage msg) {
-		this.msg = msg;
 	}
 }
