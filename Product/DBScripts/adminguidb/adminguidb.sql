@@ -61,7 +61,12 @@ VALUES
 ("connectionManager.xhtml", "Connection Management", 0, 3),
 ("properties.xhtml", "CONNECT Properties", 0, 1),
 ("properties.xhtml", "CONNECT Properties", 0, 2),
-("properties.xhtml", "CONNECT Properties", 0, 3);
+("properties.xhtml", "CONNECT Properties", 0, 3),
+("universalClient.xhtml", "CONNECT Universal Client", 0, 1),
+("universalClient.xhtml", "CONNECT Universal Client", 0, 2),
+("universalClient.xhtml", "CONNECT Universal Client", 0, 3);
+
+
 
 
 INSERT INTO adminguidb.UserLogin

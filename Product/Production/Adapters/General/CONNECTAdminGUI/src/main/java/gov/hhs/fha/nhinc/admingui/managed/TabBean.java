@@ -45,6 +45,8 @@ public class TabBean {
     private int adminTabIndex = 0;
     private int directTabIndex = 0;
     private int propIndex = 0;
+    private int patientSearchIndex = 0;
+    private int documentQueryIndex = 0;
 
     /**
      *
@@ -61,7 +63,7 @@ public class TabBean {
     public void setDirectTabIndex(int directTabIndex) {
         this.directTabIndex = directTabIndex;
     }
-    
+
     /**
      *
      * @return
@@ -145,7 +147,7 @@ public class TabBean {
      * @param directTabIndex
      * @return
      */
-    public String setDirectTabIndexNavigate(int directTabIndex){
+    public String setDirectTabIndexNavigate(int directTabIndex) {
         this.directTabIndex = directTabIndex;
         return NavigationConstant.DIRECT_PAGE;
     }
@@ -163,79 +165,78 @@ public class TabBean {
 
     // All "navigateTo" functions below were added as a workaround to an Expression Language bug found in WAS 8.5.0.1
     // For more information, see http://www-01.ibm.com/support/docview.wss?uid=swg1PM72533 (PM72533)
-    
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String navigateToDirectDomainTab() {
         return setDirectTabIndexNavigate(NavigationConstant.DIRECT_DOMAIN_TAB);
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String navigateToDirectSettingTab() {
         return setDirectTabIndexNavigate(NavigationConstant.DIRECT_SETTING_TAB);
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String navigateToDirectCertificateTab() {
         return setDirectTabIndexNavigate(NavigationConstant.DIRECT_CERTIFICATE_TAB);
     }
 
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String navigateToDirectTrustbundleTab() {
         return setDirectTabIndexNavigate(NavigationConstant.DIRECT_TRUSTBUNDLE_TAB);
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String navigateToAccountMgmtUserAccountTab() {
         return setAdminTabIndexNavigate(NavigationConstant.ACCOUNT_MGMT_USERACC_TAB);
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String navigateToAccountMgmtManageRoleTab() {
         return setAdminTabIndexNavigate(NavigationConstant.ACCOUNT_MGMT_MANAGEROLE_TAB);
     }
-    
+
     public String navigateToGatewayPropTab() {
         return setGatewayPropertyTabAndNavigate(0);
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String navigateToGatewayDashboardTab() {
         return setDashboardTabIndexNavigate(NavigationConstant.GATEWAY_DASHBOARD_TAB);
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public String navigateToGatewayRemoteListTab() {
         return setDashboardTabIndexNavigate(NavigationConstant.GATEWAY_REMOTELIST_TAB);
     }
-    
+
     public String navigateToConnectionManagement() {
         return NavigationConstant.CM_PAGE;
     }
-    
+
     public String setGatewayPropertyTabAndNavigate(int i) {
         this.propIndex = i;
         return "properties";
@@ -248,5 +249,62 @@ public class TabBean {
     public void setPropIndex(int propIndex) {
         this.propIndex = propIndex;
     }
-    
+
+    /**
+     *
+     * @return
+     */
+    public String navigateToPatientSearchTab() {
+        return setPatientSearchIndexNavigate(NavigationConstant.UC_PATIENTSEARCH_TAB);
+    }
+
+    /**
+     *
+     * @param patientSearchIndex
+     * @return
+     */
+    public String setPatientSearchIndexNavigate(int patientSearchIndex) {
+        this.patientSearchIndex = patientSearchIndex;
+        return NavigationConstant.UNIVERSAL_CLIENT;
+    }
+
+    public String navigateToDocumentQueryTab() {
+        return setPatientSearchIndexNavigate(NavigationConstant.UC_DOCUMENTQUERY_TAB);
+    }
+
+    public void onTabChange(TabChangeEvent event) {
+
+        if (event.getTab().getId().equals("patientsearch")) {
+            //Your actions for tab1
+        } else if ((event.getTab().getId().equals("docQuerry"))) {
+            //Your actions for tab2
+        }
+    }
+
+    /*public String navigateToDocumentQueryTab(int documentQueryIndex) {
+     return setPatientSearchIndexNavigate(NavigationConstant.UC_DOCUMENTQUERY_TAB);
+     } */
+    /**
+     *
+     * @return
+     */
+    public int getPatientSearchIndex() {
+        return patientSearchIndex;
+    }
+
+    /**
+     *
+     * @param patientSearchIndex
+     */
+    public void setPatientSearchIndex(int patientSearchIndex) {
+        this.patientSearchIndex = patientSearchIndex;
+    }
+
+    public int getDocumentQueryIndex() {
+        return documentQueryIndex;
+    }
+
+    public void setDocumentQueryIndex(int documentQueryIndex) {
+        this.documentQueryIndex = documentQueryIndex;
+    }
 }

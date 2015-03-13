@@ -52,6 +52,10 @@
                         <p:menuitem value="Certificates" action="#{tabBean.navigateToDirectCertificateTab()}" styleClass="glyphicon glyphicon-list-alt" />
                         <p:menuitem value="Trust Bundles" action="#{tabBean.navigateToDirectTrustbundleTab()}" styleClass="glyphicon glyphicon-briefcase" />			
                     </p:submenu>
+                    <p:submenu label="Universal Client" styleClass="sidebar-green" >
+                        <p:menuitem value="Patient Search" action="#{tabBean.navigateToPatientSearchTab()}" styleClass="glyphicon glyphicon-list-alt" />                        
+                        <p:menuitem value="Document Query" action="#{tabBean.navigateToDocumentQueryTab()}" styleClass="glyphicon glyphicon-list-alt" />
+                    </p:submenu>
                     <p:submenu label="Account Management" styleClass="sidebar-blue">
                         <p:menuitem value="User Accounts" action="#{tabBean.navigateToAccountMgmtUserAccountTab()}" styleClass="glyphicon glyphicon-user" />
                         <p:menuitem value="Manage Roles" action="#{tabBean.navigateToAccountMgmtManageRoleTab()}" styleClass="glyphicon glyphicon-lock" />

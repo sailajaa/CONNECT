@@ -38,6 +38,7 @@ public class NavigationConstant {
     public static final String DIRECT_PAGE = "direct";
     public static final String DIRECT_XHTML = "direct.xhtml";
     public static final String CM_PAGE = "connectionManager";
+    public static final String UNIVERSAL_CLIENT = "universalClient";
 
     public static final int DIRECT_DOMAIN_TAB = 0;
     public static final int DIRECT_SETTING_TAB = 1;
@@ -50,4 +51,6 @@ public class NavigationConstant {
     public static final int GATEWAY_DASHBOARD_TAB = 0;
     public static final int GATEWAY_REMOTELIST_TAB = 1;
 
+    public static final int UC_PATIENTSEARCH_TAB = 0;
+    public static final int UC_DOCUMENTQUERY_TAB = 1;
 }
