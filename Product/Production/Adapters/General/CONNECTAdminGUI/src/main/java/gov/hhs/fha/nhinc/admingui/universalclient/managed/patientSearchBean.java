@@ -27,6 +27,7 @@
 package gov.hhs.fha.nhinc.admingui.universalclient.managed;
 
 import gov.hhs.fha.nhinc.admingui.constant.NavigationConstant;
+import gov.hhs.fha.nhinc.admingui.managed.TabBean;
 import gov.hhs.fha.nhinc.admingui.universalclient.metadata.Document;
 import gov.hhs.fha.nhinc.admingui.universalclient.metadata.Patient;
 import gov.hhs.fha.nhinc.admingui.universalclient.metadata.SearchCriteria;
@@ -42,6 +43,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
+import org.primefaces.component.tabview.TabView;
 import org.springframework.stereotype.Component;
 
 /**
@@ -59,10 +61,11 @@ public class patientSearchBean {
     private String dateOfBirth = null;
     private String gender = null;
     private String organization = null;
-    public List<Patient> foundPatients;
+    public Patient foundPatients;
     private boolean patientFound = false;
     private String errorMessage = "";
     private boolean documentFound = false;
+    org.primefaces.component.tabview.TabView tabview = null;
 
     /**
      * default constructor
@@ -72,12 +75,11 @@ public class patientSearchBean {
 
     public String patientSearch() {
 
-        System.out.println("inside patient search");
+        log.debug("Searching for patient: " + getLastName() + ", " + getFirstName());
         SearchCriteria searchCriteria = createSearchCriteria();
         List<Patient> patientsList = buildPatientListFromDatabase();
         patientFound = findPatient(patientsList, searchCriteria);
         if (patientFound) {
-            System.out.println("*******************patient found******************" + patientFound);
             return NavigationConstant.UNIVERSAL_CLIENT;
         }
 
@@ -86,6 +88,19 @@ public class patientSearchBean {
         patientFound = false;
         log.error("Error in Search Patient: ");
         return "No Patient found****";
+    }
+
+    public void navigateToDocumentQueryTab() {
+        tabview.setActiveIndex(1);
+
+    }
+
+    public TabView getTabview() {
+        return tabview;
+    }
+
+    public void setTabview(TabView tabview) {
+        this.tabview = tabview;
     }
 
     public String documentSearch() {
@@ -107,44 +122,16 @@ public class patientSearchBean {
         //return documentList;
     }
 
-    public boolean findPatient1(List<Patient> patientsList, SearchCriteria searchCriteria) {
-        try {
-            //boolean patientFound = false;
-            Iterator<Patient> patientsIterator = patientsList.iterator();
-            foundPatients = new ArrayList<Patient>();
-            while (patientsIterator.hasNext()) {
-                Patient patient = patientsIterator.next();
-                if (patient != null) {
-                    if ((patient.getFirstName().equalsIgnoreCase(searchCriteria.getFirstName()))) {
-                        foundPatients.add(patient);
-                        patientFound = true;
-                        return patientFound;
-                    }
-                }
-            }
-
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().validationFailed();
-            FacesContext.getCurrentInstance().addMessage("patientSearchErrors",
-                new FacesMessage(FacesMessage.SEVERITY_ERROR, "No Patient Found: " + e.getLocalizedMessage(), ""));
-            patientFound = false;
-            log.error("Error in Search Patient: " + e.getMessage());
-        }
-
-        firstName = null;
-        lastName = null;
-        return patientFound;
-    }
-
     public boolean findPatient(List<Patient> patientsList, SearchCriteria searchCriteria) {
         Iterator<Patient> patientsIterator = patientsList.iterator();
-        foundPatients = new ArrayList<Patient>();
+        foundPatients = new Patient();
         while (patientsIterator.hasNext()) {
             Patient p = patientsIterator.next();
             if (p != null) {
                 if ((p.getFirstName().equalsIgnoreCase(searchCriteria.getFirstName()))) {
-                    foundPatients.add(p);
+                    foundPatients = p;
                     patientFound = true;
+                    break;
                 }
             }
         }
@@ -154,13 +141,22 @@ public class patientSearchBean {
             patientFound = false;
         }
 
-        organization = null;
-        firstName = null;
-        lastName = null;
-        dateOfBirth = null;
-        gender = null;
-
         return patientFound;
+    }
+
+    public String resetPatient() {
+        this.patientFound = false;
+        this.foundPatients = null;
+        clearPatientSearch();
+        return NavigationConstant.UNIVERSAL_CLIENT;
+    }
+
+    private void clearPatientSearch() {
+        this.organization = null;
+        this.firstName = null;
+        this.lastName = null;
+        this.gender = null;
+        this.dateOfBirth = null;
     }
 
     public SearchCriteria createSearchCriteria() {
@@ -295,11 +291,11 @@ public class patientSearchBean {
         this.gender = gender;
     }
 
-    public List<Patient> getFoundPatients() {
+    public Patient getFoundPatients() {
         return foundPatients;
     }
 
-    public void setFoundPatients(List<Patient> foundPatients) {
+    public void setFoundPatients(Patient foundPatients) {
         this.foundPatients = foundPatients;
     }
 

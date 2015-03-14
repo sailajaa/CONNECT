@@ -41,12 +41,11 @@
             <ui:define name="content">
                 <h1 class="section-header">Universal Client</h1>
                 <!-- BEGIN: MAIN CONTENT - TAB BAR NAVIGATION -->
-                <p:tabView id="patientSearchTabview" effect="fade" effectDuration="normal" dynamic="true" activeIndex="#{tabBean.patientSearchIndex}" styleClass="tabs-override tabs-ovr-blue" > 
-                   <!-- <p:ajax event="tabChange" listener="#{tabBean.onTabChange}" update=":patientSearchTabview:docQuerry" /> -->
+                <p:tabView id="patientSearchTabview"  effectDuration="normal" dynamic="true" activeIndex="#{tabBean.patientSearchIndex}" styleClass="tabs-override tabs-ovr-blue" >                      
                     <!-- BEGIN: MAIN CONTENT - TAB PANES - All the data/information is contained here -->
                     <div class="tab-content">
                         <!-- BEGIN: TAB PANE - UNIVERSAL CLIENT - PATIENT SEARCH -->
-                       <p:tab title="Patient Search"  closable="false" id="patientsearch">
+                       <p:tab title="Patient Search"  closable="false" >
                             <div class="tab-pane active" id="patientSearch">
                                 <div class="content-block">
                                     <h2 class="subsection-header">Search For Patient</h2>
@@ -57,6 +56,14 @@
                                         <div class="form-block center-block">
                                             <h:form class="form-horizontal" role="form" id="patientSearchForm">
                                                 <p:messages id="patientSearchMessage" autoUpdate="true"  closable="true" severity="error" redisplay="false" />
+                                                
+                                                <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <div class="form-button-row">                                                           
+                                                            <p:commandButton id="submit1" value="Search1"   action="#{tabBean.navigateToDocumentQueryTab()}" styleClass="btn btn-primary"  />
+                                                        </div>
+                                                    </div>  
+                                                </div>
                                               
                                                 <div class="form-group">
                                                     <h:outputLabel for="select-organization" class="col-sm-3 control-label" id="organizationLbl" value="Organization:" />
@@ -101,210 +108,73 @@
                                                     </div>
                                                 </div>
 
-
                                                 <div class="form-group">
                                                     <div class="col-sm-12">
                                                         <div class="form-button-row">
-                                                            <p:commandButton type="reset" value="Reset" styleClass="btn btn-default" />
-                                                            <p:commandButton id="submit" value="Search"  update="firstname, lastname, patientSearchMessage, :patientSearchTabview:patientListTable " action="#{patientSearchBean.patientSearch()}" styleClass="btn btn-primary" icon="ui-icon-circle-plus" />
+                                                            <p:commandButton id="reset" value="Reset" action="#{patientSearchBean.resetPatient()}" styleClass="btn btn-default" />
+                                                            <p:commandButton id="submit" value="Search"   update=":patientSearchTabview:patientList" action="#{patientSearchBean.patientSearch()}" styleClass="btn btn-primary"  />
                                                         </div>
                                                     </div>  
-                                                </div>
+                                                </div> 
+                                                </h:form>  
+                                                                                            <!--SEARCH RESULTS OF PATIENT -->
+                                            <h:form id="patientList">
+                                                
+                                                <h:dataTable id="patientList" value="#{patientSearchBean.foundPatients}" var="patient" styleClass="table" rendered="#{patientSearchBean.isPatientFound()}">
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="PATIENT RECORD FOUND:" />
+                                                        </f:facet>
+                                                    </h:column>
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="FIRSTNAME" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{patient.patientid}" />
+                                                    </h:column>
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="LASTNAME" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{patient.lastName}" />
+                                                    </h:column>
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="CITY" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{patient.firstName}" />
+                                                    </h:column>
+                                                    <h:column>
+                                                        <p:commandButton id="patientinfo"  type="submit" value="Patient Info"  action="#{tabBean.navigateToDocumentQueryTab()}" />                                                         
+                                                        <h:commandLink title="Patient Info" action="#{patientSearchBean.patientSearch()}">Patient Info</h:commandLink>
+                                                    </h:column>
+                                                </h:dataTable>
+                                                <!-- END SEARCH RESULT OF PATIENT -->
                                             </h:form> 
                                         </div>
                                     </div>
-                                </div>                               
-                                <h:panelGroup id="patientListTable">              
-                                    <h:panelGroup   rendered="#{patientSearchBean.patientFound}" layout="block">
-                                        <div class="content-block" >
-                                            <h2 class="subsection-header" align="center">Patient Search Details</h2>
-                                            <div class="content">
-                                                <div class="form-block center-block">
-                                                    <h:form class="form-horizontal" id="patientDetailsForm" >
-                                                        <!-- <p:messages id="noRecordFoundMsg" autoUpdate="true"  closable="true" severity="error" redisplay="false" />    -->
-                                                        <div class="form-group">
-                                                            <h:outputText class="col-sm-3 control-label" value="Organization:" />
-                                                            <div class="col-sm-9">
-                                                                <h:outputText style="text-align: left" value="#{patientSearchBean.foundPatients[0].organization}" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <h:outputText class="col-sm-3 control-label" value="First Name:" />
-                                                            <div class="col-sm-9">
-                                                                <h:outputText style="text-align: left" value="#{patientSearchBean.foundPatients[0].firstName}" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <h:outputText class="col-sm-3 control-label" value="Last Name:" />
-                                                            <div class="col-sm-9">
-                                                                <h:outputText style="text-align: left" value="#{patientSearchBean.foundPatients[0].lastName}" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <h:outputText class="col-sm-3 control-label" value="Date Of Birth:" />
-                                                            <div class="col-sm-9">
-                                                                <h:outputText style="text-align: left" value="12/12/2012" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <h:outputText class="col-sm-3 control-label" value="Gender:" />
-                                                            <div class="col-sm-9">
-                                                                <h:outputText style="text-align: left" value="Male" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <h:outputText class="col-sm-3 control-label" value="Ethnicity:" />
-                                                            <div class="col-sm-9">
-                                                                <h:outputText style="text-align: left" value="American" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <h:outputText class="col-sm-3 control-label" value="City:" />
-                                                            <div class="col-sm-9">
-                                                                <h:outputText style="text-align: left" value="Maryland" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <div class="col-sm-12">
-                                                                <div class="form-button-row">                                                            
-                                                                    <p:commandButton id="PatientDetails"  type="submit" value="Continue.."  update=":patientSearchTabview:docQuery" action="#{patientSearchBean.patientSearch()}" immediate="true" styleClass="btn btn-primary" icon="ui-icon-circle-plus" /> 
-                                                                </div>
-                                                            </div>  
-                                                        </div>
-                                                    </h:form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </h:panelGroup>
-
-                                </h:panelGroup>
+                                </div>   
                             </div>
-                       </p:tab>   
+                       </p:tab>                          
                          <!-- END: TAB PANE - PATIENT SEARCH  -->
-                         <!-- BEGIN: TAB PANE - DOCUMENT QUERY -->
-                         <p:tab id="docQuery" title="Document Query "  >  
-
-                             <div class="tab-pane active" id="documentSearch">
-                                 <div class="content-block">
-                                     <h2 class="subsection-header">Query for Documents</h2>
-                                     <div class="content">
-                                         <div class="form-block center-block">
-                                             <h:panelGroup id="DocumentQueryTable" rendered="#{patientSearchBean.patientFound}" layout="block">  
-                                                 <h:outputText value="#{tabBean.patientSearchIndex}"/>
-                                                 <h:outputText value="index"/>
-                                                    <div class="content">
-                                                         <div class="form-block center-block">
-                                                             <h:form class="form-horizontal" id="documentDetailsForm" >
-                                                                 <!-- <p:messages id="noRecordFoundMsg" autoUpdate="true"  closable="true" severity="error" redisplay="false" />    -->
-                                                                 <div class="form-group">
-                                                                     <h:outputText class="col-sm-3 control-label" value="Organization:" />
-                                                                     <div class="col-sm-9">
-                                                                         <h:outputText style="text-align: left" value="#{patientSearchBean.foundPatients[0].organization}" />
-                                                                     </div>
-                                                                 </div>
-                                                                 <div class="form-group">
-                                                                     <h:outputText class="col-sm-3 control-label" value="First Name:" />
-                                                                     <div class="col-sm-9">
-                                                                         <h:outputText style="text-align: left" value="#{patientSearchBean.foundPatients[0].firstName}" />
-                                                                     </div>
-                                                                 </div>
-                                                                 <div class="form-group">
-                                                                     <h:outputText class="col-sm-3 control-label" value="Last Name:" />
-                                                                     <div class="col-sm-9">
-                                                                         <h:outputText style="text-align: left" value="#{patientSearchBean.foundPatients[0].lastName}" />
-                                                                     </div>
-                                                                 </div>
-                                                                 <div class="form-group">
-                                                                     <h:outputText class="col-sm-3 control-label" value="Date Of Birth:" />
-                                                                     <div class="col-sm-9">
-                                                                         <h:outputText style="text-align: left" value="12/12/2012" />
-                                                                     </div>
-                                                                 </div>
-                                                                 <div class="form-group">
-                                                                     <h:outputText class="col-sm-3 control-label" value="Gender:" />
-                                                                     <div class="col-sm-9">
-                                                                         <h:outputText style="text-align: left" value="Male" />
-                                                                     </div>
-                                                                 </div>
-                                                                 <div class="form-group">
-                                                                     <h:outputText class="col-sm-3 control-label" value="Ethnicity:" />
-                                                                     <div class="col-sm-9">
-                                                                         <h:outputText style="text-align: left" value="American" />
-                                                                     </div>
-                                                                 </div>
-                                                                 <div class="form-group">
-                                                                     <h:outputText class="col-sm-3 control-label" value="City:" />
-                                                                     <div class="col-sm-9">
-                                                                         <h:outputText style="text-align: left" value="Maryland" />
-                                                                     </div>
-                                                                 </div>
-
-                                                                 <div class="form-group">
-                                                                     <h:outputLabel for="documenttitle" class="col-sm-3 control-label" id="documenttitleLbl" value="Document Title:" />
-                                                                     <div class="col-sm-9">
-                                                                         <p:inputText styleClass="form-control" id="documenttitle" maxlength="30"  />
-                                                                     </div>
-                                                                 </div>
-
-                                                                 <div class="form-group">
-                                                                     <h:outputLabel for="documenttype" class="col-sm-3 control-label" id="documenttypeLbl" value="Document Type:" />
-                                                                     <div class="col-sm-9">
-                                                                         <p:inputText styleClass="form-control" id="documenttype" maxlength="30"   />
-                                                                     </div>
-                                                                 </div>
-                                                                 <div class="form-group">
-                                                                     <h:outputLabel for="startdate" class="col-sm-3 control-label" id="startdateLbl" value="Start Date:" />
-                                                                     <div class="col-sm-9">                                                        
-                                                                         <p:calendar id="startdate"  showOn="button" />
-                                                                     </div>
-                                                                 </div>
-                                                                 <div class="form-group">
-                                                                     <h:outputLabel for="enddate" class="col-sm-3 control-label" id="dateOfBirthLbl" value="End Date:" />
-                                                                     <div class="col-sm-9">                                                        
-                                                                         <p:calendar id="enddate"  showOn="button" />
-                                                                     </div>
-                                                                 </div>
-                                                                 <div class="form-group">
-                                                                     <div class="col-sm-12">
-                                                                         <div class="form-button-row">                                                            
-                                                                             <p:commandButton id="DocumentRetrieve"  value="DocumentRetrieve"  action="#{patientSearchBean.documentSearch}" styleClass="btn btn-primary" icon="ui-icon-circle-plus" /> 
-                                                                         </div>
-                                                                     </div>  
-                                                                 </div>
-                                                             </h:form>
-                                                         </div>
-                                                    </div>
-                                             </h:panelGroup>
-                                         </div>
-                                     </div>
-                                 </div>  
-                               <!-- <h:panelGroup id="documentList">                                          
-                                <h:panelGroup   rendered="#{patientSearchBean.documentFound}" layout="block"> -->
-                                <div class="content-block" >
-                                    <h2 class="subsection-header">Document Retrieve</h2>
+                         <!-- START : DOCUMENT QUERY TAB -->
+                         <p:tab title="Document Search"  closable="false" id="documentsearchtab">
+                              <div class="tab-pane active" id="documentSearch">
+                                <div class="content-block">
                                     <div class="content">
+                                       
                                         <div class="form-block center-block">
-                                            <h:form id="documentList" class="form-horizontal" >                                                   
-                                                <p:dataTable id="documentListTable"  styleClass="table table-striped table-domains">
-                                                    <p:column headerText="Document ID">
-                                                        <h:outputText value="Clinical Document 2" />
-                                                    </p:column>
-                                                    <p:column headerText="Document Type">
-                                                        <h:outputText value="Clinical Document 3" />
-                                                    </p:column>
-                                                    <p:column headerText="Document Title">
-                                                        <h:outputText value="Clinical Document 4" />
-                                                    </p:column>                                                      
-                                                </p:dataTable>                                               
+                                            <h:form class="form-horizontal" role="form" id="DocumentSearchForm">
+                                                                                              
+                                                <h:outputText value="With int he document search tab"/>
                                             </h:form>
                                         </div>
                                     </div>
                                 </div>
-                             <!--   </h:panelGroup>
-                                 </h:panelGroup> -->
-                             </div>
+                              </div>
+                             
                          </p:tab>
-                         <!-- END: TAB PANE - DOCUMENT QUERY -->
+                         <!-- END : DOCUMENT QUERY TAB -->
                     </div>
                     <!-- END: MAIN CONTENT - TAB PANES - All the data/information is contained here -->
                 </p:tabView>

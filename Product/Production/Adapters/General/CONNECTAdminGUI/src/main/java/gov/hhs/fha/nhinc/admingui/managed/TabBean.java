@@ -272,16 +272,16 @@ public class TabBean {
         return setPatientSearchIndexNavigate(NavigationConstant.UC_DOCUMENTQUERY_TAB);
     }
 
-    public void onTabChange(TabChangeEvent event) {
+    /*  public void onTabChange(TabChangeEvent event) {
 
-        if (event.getTab().getId().equals("patientsearch")) {
-            //Your actions for tab1
-        } else if ((event.getTab().getId().equals("docQuerry"))) {
-            //Your actions for tab2
-        }
-    }
+     if (event.getTab().getId().equals("patientsearch")) {
+     //Your actions for tab1
+     } else if ((event.getTab().getId().equals("docQuerry"))) {
+     //Your actions for tab2
+     }
+     }
 
-    /*public String navigateToDocumentQueryTab(int documentQueryIndex) {
+     /*public String navigateToDocumentQueryTab(int documentQueryIndex) {
      return setPatientSearchIndexNavigate(NavigationConstant.UC_DOCUMENTQUERY_TAB);
      } */
     /**

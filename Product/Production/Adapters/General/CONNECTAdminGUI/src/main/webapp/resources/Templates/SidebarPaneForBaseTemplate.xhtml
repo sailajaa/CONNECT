@@ -35,7 +35,9 @@
     <body>
     <ui:composition>
         <div class="col-xs-2 sidebar sidebar-scroll">
-            <h1 class="page-header">Gateway Administrative Console</h1>
+            <h1 class="page-header">Gateway Administrative Console</h1>          
+            
+            
             
             <h:form>
                 <p:panelMenu style="width:100%">
@@ -53,8 +55,7 @@
                         <p:menuitem value="Trust Bundles" action="#{tabBean.navigateToDirectTrustbundleTab()}" styleClass="glyphicon glyphicon-briefcase" />			
                     </p:submenu>
                     <p:submenu label="Universal Client" styleClass="sidebar-green" >
-                        <p:menuitem value="Patient Search" action="#{tabBean.navigateToPatientSearchTab()}" styleClass="glyphicon glyphicon-list-alt" />                        
-                        <p:menuitem value="Document Query" action="#{tabBean.navigateToDocumentQueryTab()}" styleClass="glyphicon glyphicon-list-alt" />
+                        <p:menuitem value="Patient Search" action="#{tabBean.navigateToPatientSearchTab()}" styleClass="glyphicon glyphicon-list-alt" />
                     </p:submenu>
                     <p:submenu label="Account Management" styleClass="sidebar-blue">
                         <p:menuitem value="User Accounts" action="#{tabBean.navigateToAccountMgmtUserAccountTab()}" styleClass="glyphicon glyphicon-user" />
