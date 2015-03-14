@@ -41,7 +41,7 @@
             <ui:define name="content">
                 <h1 class="section-header">Universal Client</h1>
                 <!-- BEGIN: MAIN CONTENT - TAB BAR NAVIGATION -->
-                <p:tabView id="patientSearchTabview"  effectDuration="normal" dynamic="true" activeIndex="#{tabBean.patientSearchIndex}" styleClass="tabs-override tabs-ovr-blue" >                      
+                <p:tabView id="patientSearchTabview"  effectDuration="normal" dynamic="true" activeIndex="#{tabBean.patientSearchIndex}" styleClass="tabs-override tabs-ovr-blue" binding="#{patientSearchBean.tabview}">                      
                     <!-- BEGIN: MAIN CONTENT - TAB PANES - All the data/information is contained here -->
                     <div class="tab-content">
                         <!-- BEGIN: TAB PANE - UNIVERSAL CLIENT - PATIENT SEARCH -->
