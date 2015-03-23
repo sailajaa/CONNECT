@@ -40,67 +40,52 @@
             <ui:define name="metatag"></ui:define>
             <ui:define name="content">
                 <h1 class="section-header">Universal Client</h1>
-                <!-- BEGIN: MAIN CONTENT - TAB BAR NAVIGATION -->
-                <p:tabView id="patientSearchTabview"  effectDuration="normal" dynamic="true" activeIndex="#{tabBean.patientSearchIndex}" styleClass="tabs-override tabs-ovr-blue" binding="#{patientSearchBean.tabview}">                      
-                    <!-- BEGIN: MAIN CONTENT - TAB PANES - All the data/information is contained here -->
-                    <div class="tab-content">
-                        <!-- BEGIN: TAB PANE - UNIVERSAL CLIENT - PATIENT SEARCH -->
-                       <p:tab title="Patient Search"  closable="false" >
-                            <div class="tab-pane active" id="patientSearch">
-                                <div class="content-block">
-                                    <h2 class="subsection-header">Search For Patient</h2>
+                <h:form id="parentform" class="form-horizontal">
 
-                                    <div class="content">
-                                        <p>Enter the Following Patient Search Criteria:</p>
-
-                                        <div class="form-block center-block">
-                                            <h:form class="form-horizontal" role="form" id="patientSearchForm">
-                                                <p:messages id="patientSearchMessage" autoUpdate="true"  closable="true" severity="error" redisplay="false" />
-                                                
+                    <p:tabView id="patientSearchTabview" effect="fade" effectDuration="normal" dynamic="true" activeIndex="#{tabBean.patientSearchIndex}" styleClass="tabs-override tabs-ovr-blue">
+                        <div class="tab-content">
+                            <p:tab id="PatientSearch" title="Patient Search">
+                                <div class="tab-pane active" id="patientSearch">
+                                    <div class="content-block">
+                                        <h2 class="subsection-header">Search For Patient</h2>
+                                        <div class="content">
+                                            <p>Enter the Following Patient Search Criteria:</p>
+                                            <div class="form-block center-block">                                               
+                                                <p:messages id="patientSearchMessage" autoUpdate="true"  closable="true" severity="error" redisplay="false" /> 
                                                 <div class="form-group">
-                                                    <div class="col-sm-12">
-                                                        <div class="form-button-row">                                                           
-                                                            <p:commandButton id="submit1" value="Search1"   action="#{tabBean.navigateToDocumentQueryTab()}" styleClass="btn btn-primary"  />
-                                                        </div>
-                                                    </div>  
-                                                </div>
-                                              
-                                                <div class="form-group">
-                                                    <h:outputLabel for="select-organization" class="col-sm-3 control-label" id="organizationLbl" value="Organization:" />
+                                                    <h:outputLabel for="organization" class="col-sm-3 control-label" id="organizationLbl" value="Organization:" />
                                                     <div class="col-sm-9">
-                                                        <h:selectOneMenu class="form-control" id="select-organization" value="#{patientSearchBean.organization}">
+                                                        <h:selectOneMenu class="form-control" id="organization" value="#{universalClientBean.organization}">
                                                             <f:selectItem itemLabel=" " itemValue="0"/>
                                                             <f:selectItem itemLabel="Gateway 2" itemValue="1"/>
                                                             <f:selectItem itemLabel="Gateway 1" itemValue="2"/>                                                            
                                                         </h:selectOneMenu>
                                                     </div>
                                                 </div>
-
                                                 <div class="form-group">
                                                     <h:outputLabel for="firstname" class="col-sm-3 control-label" id="firstnameLbl" value="First Name:" />
                                                     <div class="col-sm-9">
-                                                        <p:inputText styleClass="form-control" id="firstname" maxlength="20" required="true" value="#{patientSearchBean.firstName}" requiredMessage="First Name required." />
+                                                        <p:inputText styleClass="form-control" id="firstname" maxlength="20" required="true" value="#{universalClientBean.firstName}" requiredMessage="First Name required." />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <h:outputLabel for="lastname" class="col-sm-3 control-label" id="lastnameLbl" value="Last Name:" />
+                                                    <div class="col-sm-9">
+                                                        <p:inputText styleClass="form-control" id="lastname" maxlength="20" required="true" value="#{universalClientBean.lastName}" requiredMessage="Last Name required." />
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <h:outputLabel for="lastname" class="col-sm-3 control-label" id="lastnameLbl" value="Last Name:" />
-                                                    <div class="col-sm-9">
-                                                        <p:inputText styleClass="form-control" id="lastname" maxlength="20" required="true" value="#{patientSearchBean.lastName}" requiredMessage="Last Name required." />
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="form-group">
                                                     <h:outputLabel for="dateofbirth" class="col-sm-3 control-label" id="dateOfBirthLbl" value="Date Of Birth:" />
                                                     <div class="col-sm-9">                                                        
-                                                        <p:calendar id="dateofbirth" value="#{patientSearchBean.dateOfBirth}" showOn="button" requiredMessage="Date Of Birth required."/>
+                                                        <p:calendar id="dateofbirth" value="#{universalClientBean.dateOfBirth}" showOn="button" requiredMessage="Date Of Birth required."/>
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <h:outputLabel for="gender" class="col-sm-3 control-label" id="genderLbl" value="Gender:" />
                                                     <div class="col-sm-9">
-                                                        <h:selectOneMenu class="form-control" id="gender" value="#{patientSearchBean.gender}" requiredMessage="Gender required.">
+                                                        <h:selectOneMenu class="form-control" id="gender" value="#{universalClientBean.gender}" requiredMessage="Gender required.">
                                                             <f:selectItem itemLabel=" " itemValue="0"/>
                                                             <f:selectItem itemLabel="Male" itemValue="1"/>
                                                             <f:selectItem itemLabel="Female" itemValue="2"/>
@@ -111,73 +96,156 @@
                                                 <div class="form-group">
                                                     <div class="col-sm-12">
                                                         <div class="form-button-row">
-                                                            <p:commandButton id="reset" value="Reset" action="#{patientSearchBean.resetPatient()}" styleClass="btn btn-default" />
-                                                            <p:commandButton id="submit" value="Search"   update=":patientSearchTabview:patientList" action="#{patientSearchBean.patientSearch()}" styleClass="btn btn-primary"  />
+                                                            <p:commandButton type="reset" value="Reset" styleClass="btn btn-default" />
+                                                            <p:commandButton  value="Patient Search" update="patientlistOP, firstname, lastname, dateofbirth, gender, patientSearchMessage " action="#{universalClientBean.patientSearch()}" styleClass="btn btn-primary" icon="ui-icon-circle-plus"/>
                                                         </div>
                                                     </div>  
-                                                </div> 
-                                                </h:form>  
-                                                                                            <!--SEARCH RESULTS OF PATIENT -->
-                                            <h:form id="patientList">
-                                                
-                                                <h:dataTable id="patientList" value="#{patientSearchBean.foundPatients}" var="patient" styleClass="table" rendered="#{patientSearchBean.isPatientFound()}">
-                                                    <h:column>
-                                                        <f:facet name="header">
-                                                            <h:outputText value="PATIENT RECORD FOUND:" />
-                                                        </f:facet>
-                                                    </h:column>
-                                                    <h:column>
-                                                        <f:facet name="header">
-                                                            <h:outputText value="FIRSTNAME" />
-                                                        </f:facet>
-                                                        <h:outputText value="#{patient.patientid}" />
-                                                    </h:column>
-                                                    <h:column>
-                                                        <f:facet name="header">
-                                                            <h:outputText value="LASTNAME" />
-                                                        </f:facet>
-                                                        <h:outputText value="#{patient.lastName}" />
-                                                    </h:column>
-                                                    <h:column>
-                                                        <f:facet name="header">
-                                                            <h:outputText value="CITY" />
-                                                        </f:facet>
-                                                        <h:outputText value="#{patient.firstName}" />
-                                                    </h:column>
-                                                    <h:column>
-                                                        <p:commandButton id="patientinfo"  type="submit" value="Patient Info"  action="#{tabBean.navigateToDocumentQueryTab()}" />                                                         
-                                                        <h:commandLink title="Patient Info" action="#{patientSearchBean.patientSearch()}">Patient Info</h:commandLink>
-                                                    </h:column>
-                                                </h:dataTable>
-                                                <!-- END SEARCH RESULT OF PATIENT -->
-                                            </h:form> 
-                                        </div>
-                                    </div>
-                                </div>   
-                            </div>
-                       </p:tab>                          
-                         <!-- END: TAB PANE - PATIENT SEARCH  -->
-                         <!-- START : DOCUMENT QUERY TAB -->
-                         <p:tab title="Document Search"  closable="false" id="documentsearchtab">
-                              <div class="tab-pane active" id="documentSearch">
-                                <div class="content-block">
-                                    <div class="content">
-                                       
-                                        <div class="form-block center-block">
-                                            <h:form class="form-horizontal" role="form" id="DocumentSearchForm">
-                                                                                              
-                                                <h:outputText value="With int he document search tab"/>
-                                            </h:form>
+                                                </div>
+                                                <p:outputPanel id="patientlistOP" >
+                                                    <h:panelGrid id="patientlist"  rendered="#{universalClientBean.patientFound}" border="0">
+                                                        <f:facet name="header">Patient found</f:facet>
+                                                        <p:row>    
+                                                            <p:column style="font-weight:bold;width:20px;" >organization</p:column>                                                           
+                                                            <p:column style="font-weight:bold;width:20px;">First Name</p:column>
+                                                            <p:column style="font-weight:bold;width:20px;">Last Name</p:column>                                                            
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column>#{universalClientBean.foundPatients.organization}</p:column>
+                                                            <p:column>#{universalClientBean.foundPatients.firstName}</p:column>
+                                                            <p:column>#{universalClientBean.foundPatients.lastName}</p:column>
+                                                            <p:column>
+                                                                <p:commandButton id="patientinfo"  value="Patient Info" 
+                                                                                 oncomplete=":parentform:patientSearchTabview.select(1)"
+                                                                                 update=":parentform" actionListener="#{tabBean.patientDetails()}" />
+                                                            </p:column>
+                                                        </p:row>
+                                                    </h:panelGrid>
+                                                </p:outputPanel>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                              </div>
-                             
-                         </p:tab>
-                         <!-- END : DOCUMENT QUERY TAB -->
-                    </div>
-                    <!-- END: MAIN CONTENT - TAB PANES - All the data/information is contained here -->
-                </p:tabView>
+                            </p:tab>
+                            <p:tab id="patientdetails" title="Document Query" rendered="#{universalClientBean.isPatientFound()}"> 
+                                <div class="tab-content">
+                                    <p:outputPanel id="patientDetailsOP">
+                                        <div class="tab-pane active" id="patientDetails">
+                                            <div class="content-block">                                                
+                                                <div class="content">
+                                                    <h2>Patient Details Info:</h2>
+                                                    <div class="form-block center-block" style="padding:0px;">                                                         
+                                                        <p:panel id="patientPanel" widgetVar="patientPanel" style="width: 100%; margin: 0 auto;">
+                                                            <p:panelGrid styleClass="ui-panelgrid-domain">
+                                                                <p:row>                                                           
+                                                                    <p:column>
+                                                                        <p:outputLabel id="fnameLbl" value="First Name:" />
+                                                                    </p:column>
+                                                                    <p:column>
+                                                                        <h:outputText id="fnamevalue" value="#{universalClientBean.foundPatients.firstName}" />
+                                                                    </p:column>
+                                                                    <p:column>
+                                                                        <p:outputLabel id="orgLbl" value="Organization:" />
+                                                                    </p:column>
+                                                                    <p:column>
+                                                                        <h:outputText id="org" value="#{universalClientBean.foundPatients.organization}" />
+                                                                    </p:column>
+                                                                    <p:column>
+                                                                        <p:outputLabel id="dobLbl" value="Date Of Birth:" />
+                                                                    </p:column>
+                                                                    <p:column>
+                                                                        <h:outputText id="dob" value="#{universalClientBean.foundPatients.dateOfBirth}" />
+                                                                    </p:column>
+                                                                </p:row>
+                                                                <p:row>
+                                                                    <p:column>
+                                                                        <p:outputLabel id="lnameLbl" value="Last Name:" />
+                                                                    </p:column>
+                                                                    <p:column>
+                                                                        <h:outputText id="lnamevalue" value="#{universalClientBean.foundPatients.lastName}" />
+                                                                    </p:column>
+                                                                    <p:column>
+                                                                        <p:outputLabel id="genderLbl1" value="Gender:" />
+                                                                    </p:column>
+                                                                    <p:column>
+                                                                        <h:outputText id="gender1" value="#{universalClientBean.foundPatients.gender}" />
+                                                                    </p:column>
+                                                                </p:row>
+                                                            </p:panelGrid>
+                                                        </p:panel>
+                                                    </div>
+                                                    <div class="content">
+                                                        <div class="form-group">
+                                                            <h:outputLabel class="col-sm-3 control-label" id="documenttitleLbl" value="Document Title:" />
+                                                            <div class="col-sm-9">
+                                                                <p:inputText styleClass="form-control" id="documenttitle" maxlength="20" value="#{universalClientBean.documenttitle}" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <h:outputLabel class="col-sm-3 control-label" id="documentTypeLbl" value="Document Type:" />
+                                                            <div class="col-sm-9">
+                                                                <h:selectOneMenu class="form-control" id="documenttype" value="#{universalClientBean.documenttype}">
+                                                                    <f:selectItem itemLabel=" " itemValue="0"/>
+                                                                    <f:selectItem itemLabel="Clinical Document-1" itemValue="1"/>
+                                                                    <f:selectItem itemLabel="Physician Document-1" itemValue="2"/>   
+                                                                </h:selectOneMenu>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <h:outputLabel class="col-sm-3 control-label" id="createdTimeFromLbl" value="Created Time From:" />
+                                                            <div class="col-sm-9">
+                                                                <p:calendar id="createdTimeFrom" value="#{universalClientBean.docCreationTimeFrom}" showOn="button" navigator="true" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <h:outputLabel class="col-sm-3 control-label" id="createdTimeToLbl" value="Created Time To:" />
+                                                            <div class="col-sm-9">
+                                                                <p:calendar id="createdTimeTo" value="#{universalClientBean.docCreationTimeTo}" showOn="button" navigator="true" />
+                                                            </div>
+                                                        </div>
+                                                        <p:panelGrid styleClass="ui-panelgrid-domain ui-panelgrid-domain-bottom">
+                                                            <p:row>
+                                                                <p:column>
+                                                                    <p:commandButton id="startover-command" value="Start Over" action="#{universalClientBean.goBackToPatientSearch()}" styleClass="edit-button" />
+                                                                </p:column>
+                                                                <p:column styleClass="ui-button-rightmost">                                                           
+                                                                    <p:commandButton  id="documentquerybutton" value="Document Query"  update="documentlistOP" action="#{universalClientBean.documentSearch()}" styleClass="add-button pull-right" icon="ui-icon-search" />
+                                                                </p:column>
+                                                            </p:row>
+                                                        </p:panelGrid>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </p:outputPanel>
+                                    <p:outputPanel id="documentlistOP" >
+                                        <div class="content-block">
+                                            <h2 class="subsection-header">Document List</h2>
+                                            <div class="content">
+                                                <div class="form-block center-block">
+                                                    <p:dataTable id="documentRetrieveTable" var="document" value="#{universalClientBean.foundPatients.patientDocuments}"  rendered="#{universalClientBean.documentFound}" styleClass="table table-striped table-domains">
+                                                        <p:column headerText="Document Id">
+                                                            <h:outputText value="#{document.documentId}" />
+                                                        </p:column>
+
+                                                        <p:column headerText="Document Type">
+                                                            <h:outputText value="#{document.documentType}" />
+                                                        </p:column>
+                                                        <p:column headerText="Document Name">
+                                                            <h:outputText value="#{document.documentTitle}" />
+                                                        </p:column>
+                                                        <p:column headerText="">
+                                                            <h:commandLink  target="_new">Open Document</h:commandLink>
+                                                        </p:column>
+                                                    </p:dataTable>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </p:outputPanel>
+                                </div>
+                            </p:tab>
+                        </div>
+                    </p:tabView>     
+                </h:form>
                 <!-- END: MAIN CONTENT - TAB BAR NAVIGATION -->
             </ui:define>
         </ui:composition>

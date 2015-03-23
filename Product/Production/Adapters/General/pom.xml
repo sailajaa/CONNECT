@@ -19,7 +19,6 @@
         <module>CONNECTConsumerPreferencesProfileGUI</module>
         <module>CONNECTDeferredQueueManagerGUI</module>
         <module>CONNECTUniversalClientGUI</module>
-        <module>CONNECTAdminGUI</module>
         <module>CONNECTDirectConfig</module>
     </modules>
 </project>

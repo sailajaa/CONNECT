@@ -26,6 +26,7 @@
  */
 package gov.hhs.fha.nhinc.admingui.universalclient.metadata;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,7 +40,7 @@ public class Patient {
     private String Gender;
     private String patientid;
     private String organization;
-    private String dateOfBirth;
+    private Date dateOfBirth;
     public List<Document> patientDocuments;
 
     public List<Document> getPatientDocuments() {
@@ -90,11 +91,11 @@ public class Patient {
         this.organization = organization;
     }
 
-    public String getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

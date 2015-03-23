@@ -27,8 +27,12 @@
 package gov.hhs.fha.nhinc.admingui.managed;
 
 import gov.hhs.fha.nhinc.admingui.constant.NavigationConstant;
+import java.io.IOException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletResponse;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
 
@@ -46,7 +50,6 @@ public class TabBean {
     private int directTabIndex = 0;
     private int propIndex = 0;
     private int patientSearchIndex = 0;
-    private int documentQueryIndex = 0;
 
     /**
      *
@@ -260,6 +263,15 @@ public class TabBean {
 
     /**
      *
+     * @return
+     */
+    public String patientDetails() {
+        this.patientSearchIndex = 1;
+        return NavigationConstant.UNIVERSAL_CLIENT;
+    }
+
+    /**
+     *
      * @param patientSearchIndex
      * @return
      */
@@ -268,22 +280,6 @@ public class TabBean {
         return NavigationConstant.UNIVERSAL_CLIENT;
     }
 
-    public String navigateToDocumentQueryTab() {
-        return setPatientSearchIndexNavigate(NavigationConstant.UC_DOCUMENTQUERY_TAB);
-    }
-
-    /*  public void onTabChange(TabChangeEvent event) {
-
-     if (event.getTab().getId().equals("patientsearch")) {
-     //Your actions for tab1
-     } else if ((event.getTab().getId().equals("docQuerry"))) {
-     //Your actions for tab2
-     }
-     }
-
-     /*public String navigateToDocumentQueryTab(int documentQueryIndex) {
-     return setPatientSearchIndexNavigate(NavigationConstant.UC_DOCUMENTQUERY_TAB);
-     } */
     /**
      *
      * @return
@@ -298,13 +294,5 @@ public class TabBean {
      */
     public void setPatientSearchIndex(int patientSearchIndex) {
         this.patientSearchIndex = patientSearchIndex;
-    }
-
-    public int getDocumentQueryIndex() {
-        return documentQueryIndex;
-    }
-
-    public void setDocumentQueryIndex(int documentQueryIndex) {
-        this.documentQueryIndex = documentQueryIndex;
     }
 }

@@ -26,6 +26,8 @@
  */
 package gov.hhs.fha.nhinc.admingui.universalclient.metadata;
 
+import java.util.Date;
+
 /**
  *
  * @author sadusumilli
@@ -35,8 +37,33 @@ public class Document {
     private String documentId;
     private String documentType;
     private String documentTitle;
-    private String startDate;
-    private String endDate;
+    private Date createdTimeFrom;
+    private Date createdTimeTo;
+    private String patientId;
+
+    public Date getCreatedTimeFrom() {
+        return createdTimeFrom;
+    }
+
+    public void setCreatedTimeFrom(Date createdTimeFrom) {
+        this.createdTimeFrom = createdTimeFrom;
+    }
+
+    public Date getCreatedTimeTo() {
+        return createdTimeTo;
+    }
+
+    public void setCreatedTimeTo(Date createdTimeTo) {
+        this.createdTimeTo = createdTimeTo;
+    }
+
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
+    }
 
     public String getDocumentId() {
         return documentId;
@@ -60,22 +87,6 @@ public class Document {
 
     public void setDocumentTitle(String documentTitle) {
         this.documentTitle = documentTitle;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
     }
 
 }

@@ -26,6 +26,8 @@
  */
 package gov.hhs.fha.nhinc.admingui.universalclient.metadata;
 
+import java.util.Date;
+
 /**
  *
  * @author sadusumilli
@@ -34,10 +36,19 @@ public class SearchCriteria {
 
     private String firstName;
     private String lastName;
-    private String dateOfBirth;
+    private Date dateOfBirth;
     private String Gender;
     private String organization;
     private String patientid;
+    private String documentTitle;
+
+    public String getDocumentTitle() {
+        return documentTitle;
+    }
+
+    public void setDocumentTitle(String documentTitle) {
+        this.documentTitle = documentTitle;
+    }
 
     public String getPatientid() {
         return patientid;
@@ -79,11 +90,11 @@ public class SearchCriteria {
         this.organization = organization;
     }
 
-    public String getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
